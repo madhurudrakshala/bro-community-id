@@ -18,8 +18,14 @@ export {
     redef record Conn::Info += {
         community_id: string &optional &log;
     };
+    redef record Files::Info += {
+        community_id: string &optional &log;
+    };
 }
 
 event connection_state_remove(c: connection) {
     c$conn$community_id = hash_conn(c);
+}
+event file_over_new_connection(f: fa_file, c: connection, is_orig: bool) &priority=10{
+    f$info$community_id = hash_conn(c);
 }
